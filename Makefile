@@ -7,7 +7,7 @@ bootstrap:
 	echo "Installing virtualenv"
 	sudo pip install virtualenv
 
-venv: 	bootstrap
+venv:
 
 	virtualenv venv
 
