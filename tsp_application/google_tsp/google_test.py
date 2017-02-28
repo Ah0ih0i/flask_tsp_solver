@@ -1,6 +1,6 @@
 import unittest
 
-from tsp.google_tsp.google_distance_matrix import GoogleDistanceMatrixFactory
+from tsp_application import GoogleDistanceMatrixFactory
 
 
 class GoogleTest(unittest.TestCase):

@@ -9,9 +9,9 @@ from random import uniform
 import networkx as nx
 from datetime import datetime
 
-from tsp.google_tsp import GoogleDistanceMatrixFactory
-from tsp.tsp_solver import Christofides, AntColony
-from tsp.tsp_solver import algorithms
+from tsp_application import Christofides, AntColony
+from tsp_application import GoogleDistanceMatrixFactory
+from tsp_application import algorithms
 
 
 def mock_shortest_path_metric(n=10, low=1000, hi=5000):

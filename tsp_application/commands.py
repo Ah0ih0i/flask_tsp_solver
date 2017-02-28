@@ -1,8 +1,10 @@
-from flask import request, jsonify
-from tsp.tsp_application import matrix, tsp_application
-from tsp.tsp_solver import algorithms
-
 import logging
+
+from flask import request, jsonify
+
+from tsp_application import algorithms
+from tsp_application import matrix, tsp_application
+
 
 @tsp_application.route("/ajax/solve")
 def ajax_solve():

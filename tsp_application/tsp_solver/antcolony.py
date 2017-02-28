@@ -1,12 +1,12 @@
+import logging
 import random
 from decimal import Decimal as d
 from multiprocessing import Pool, cpu_count
 from sys import maxint
 
 import networkx as nx
-import logging
 
-from tsp.tsp_solver.abstract_tsp_solver import AbstractTSPSolver
+from tsp_application import AbstractTSPSolver
 
 # Default Values for parameters
 RHO_DEFAULT = d(0.4)

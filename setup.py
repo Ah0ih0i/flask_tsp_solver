@@ -8,7 +8,7 @@ setup(
     author_email = "thgoette@mail.upb.de",
     description = ("A Tsp Solver for IT Talents"),
     license = "BSD",
-    packages=['tsp', 'tsp.tsp_solver', 'tsp.google_tsp', 'tsp.tsp_application''tests'],
+    packages=['tsp', 'tests'],
     package_data={'tests': ['testsets/*.pickle'],
                   'tsp.tsp_application': ['templates/*.html']},
     install_requires=[
