@@ -3,6 +3,8 @@ A simple set of solvers for the TSP.
 
 Main purpose of this project was to learn JavaScript and Python Webservices 
 
+Also I submitted this to IT-Talent's code competition
+
 # CLI (Linux)
 
 For quick tests, you can use the CLI.
