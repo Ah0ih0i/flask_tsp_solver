@@ -1,4 +1,4 @@
-from tsp_application import AbstractTSPSolver
+from abstract_tsp_solver import AbstractTSPSolver
 
 
 class NearstNeighbor(AbstractTSPSolver):

@@ -3,7 +3,7 @@ from math import fmod
 
 import networkx as nx
 
-from tsp_application import AbstractTSPSolver
+from abstract_tsp_solver import AbstractTSPSolver
 
 
 class Christofides(AbstractTSPSolver):

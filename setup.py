@@ -8,9 +8,9 @@ setup(
     author_email = "thgoette@mail.upb.de",
     description = ("A Tsp Solver for IT Talents"),
     license = "BSD",
-    packages=['tsp', 'tests'],
+    packages=['tsp_application', 'tests'],
     package_data={'tests': ['testsets/*.pickle'],
-                  'tsp.tsp_application': ['templates/*.html']},
+                  'tsp_application': ['templates/*.html']},
     install_requires=[
         'Flask',
         'networkx',

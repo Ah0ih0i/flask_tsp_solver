@@ -6,7 +6,7 @@ from sys import maxint
 
 import networkx as nx
 
-from tsp_application import AbstractTSPSolver
+from abstract_tsp_solver import AbstractTSPSolver
 
 # Default Values for parameters
 RHO_DEFAULT = d(0.4)

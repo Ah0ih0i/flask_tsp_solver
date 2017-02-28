@@ -7,10 +7,11 @@ from flask import Flask
 
 
 #Create Flask application
-tsp_application = Flask(__name__)
+app = Flask(__name__)
 
 
-from tsp_application.google_tsp import GoogleDistanceMatrixFactory
+from google_tsp import GoogleDistanceMatrixFactory
+from tsp_solver import algorithms
 
 matrix = GoogleDistanceMatrixFactory("AIzaSyC8XnrBVpMr5b_rAS-ZbWIzUFsix6Gh7aY")
 

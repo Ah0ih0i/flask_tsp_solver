@@ -40,6 +40,17 @@
              }
         }
 
+        function reset() {
+            var keys = [];
+            for (var key in places){
+                places[key].destroy();
+                keys.push(key)
+            }
+            for(var key in keys){
+                delete places[key];
+            }
+        }
+
         /**
          * Adds the given place
          *
@@ -205,12 +216,10 @@
 
                     // Temporary container start's name
                     var _start = start.getPlace();
-                    window.alert(_start);
 
                     // Get places' names
                     for (var place in places){
                         if (places.hasOwnProperty(place)) {
-                            window.alert(places[place].getPlace());
                             _places.push(places[place].getPlace());
                         }
                     }
@@ -232,8 +241,8 @@
 
                         // If present, write to JSON
                         if(form){
-                            for (i=0; i<form.elements.length; i++){
-                                _options[form.elements[i].name] = form.elements[i].value
+                            for (var j=0; j<form.elements.length; j++){
+                                _options[form.elements[j].name] = form.elements[j].value
                             }
                         }
 
@@ -282,6 +291,11 @@
 
             button.onclick = solve;
 
+
+            var rb = /** @type {!HTMLInputElement} */(
+                document.getElementById('reset-button'));
+
+            rb.onclick = reset;
 
             // The Map as on Object
             map = new google.maps.Map(document.getElementById('google_tsp_map'), {
