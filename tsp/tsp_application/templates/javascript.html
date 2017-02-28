@@ -1,0 +1,341 @@
+{% extends "base.html" %}
+
+{% block javascript %}
+
+<!-- Disclaimer: This is my first time doing JavaScript. I don't know if any of this is good/bad style -->
+
+ <script>
+
+        /// Max number of places
+        const MAX_PLACES = 9;
+
+        /// Return code for success
+        const SUCCESS = 200;
+
+        /// The map
+        var map = null;
+
+        /// Dict of all places. Keys are places' names
+        var places ={
+
+        };
+
+        //Starting place
+        var start = null;
+
+        // Used algorithms
+        var algos = [];
+
+        /**
+         * Adds the given Algorithm
+         *
+         * @param pAlgo
+         */
+        function setAlgo(pAlgo) {
+             var index = algos.indexOf(pAlgo);
+             if (index > -1){
+                algos.splice(index, 1);
+             }else{
+                algos.push(pAlgo)
+             }
+        }
+
+        /**
+         * Adds the given place
+         *
+         * @param place
+         */
+        function addPlace(place) {
+
+            if(place == null)
+                return;
+
+            if (!place.geometry) {
+                window.alert("Autocomplete's returned place contains no geometry");
+                return;
+            }else
+            if(Object.keys(places).length== MAX_PLACES){
+                window.alert("You cannot have more than " + MAX_PLACES +" places");
+                return;
+            }
+
+            // If the place has a geometry, then present it on a map.
+            if (place.geometry.viewport) {
+                map.fitBounds(place.geometry.viewport);
+            } else {
+                map.setCenter(place.geometry.location);
+                map.setZoom(17);  // Why 17? Because it looks good.
+            }
+
+            if(!places[place.name])
+                places[place.name] = new PlaceWrapper(place);
+            else{
+                window.alert(place.name + " is already on your path");
+            }
+
+            if(start == null){
+                start = places[place.name];
+                start._entry.className += " active";
+            }
+        }
+
+        /**
+         * A Wrapper for a place that controls its marker in the map and its list entry
+         *
+         * @param pGooglePlace
+         * @constructor
+         */
+        function PlaceWrapper(pGooglePlace) {
+
+            //Refrence that we can use in anonymous methods
+            var thiz = this;
+
+            // Store the place
+            this._place = pGooglePlace;
+
+            var list = document.getElementById('list');
+
+            //-------------------------------------------------------------------------
+            // Create the entry in the list
+
+            this._entry = document.createElement('a');
+            this._entry.setAttribute("href","#");
+            this._entry.setAttribute("class","list-group-item");
+            this._entry.setAttribute("id","\'"+ this._place.name+ "\'");
+
+            this._entry.onclick = function (e) {
+                start._entry.className = "list-group-item";
+                start = thiz;
+                thiz._entry.className += " active"
+            };
+            this._entry.oncontextmenu = function (e) {
+                thiz.destroy();
+                return false;
+            };
+            this._entry.appendChild(document.createTextNode(this._place.name));
+
+            list.appendChild(this._entry);
+
+            //-------------------------------------------------------------------------
+            // Create the Marker
+
+            this._marker = new google.maps.Marker({
+                map: map,
+                draggable: false,
+                anchorPoint: new google.maps.Point(0, -29)
+            });
+
+            this._marker.setPosition(this._place.geometry.location);
+            this._marker.setVisible(true);
+
+            this._marker.addListener('dblclick', function() {
+                start._entry.className = "list-group-item";
+                start = thiz;
+                thiz._entry.className += " active"
+            });
+
+
+            this._marker.addListener('rightclick', function () {
+                 thiz.destroy();
+            });
+        }
+
+        PlaceWrapper.prototype = {
+
+            constructor: PlaceWrapper,
+
+            /**
+             * Returns the wrapped places' name
+             *
+             * @returns {*}
+             */
+            getPlace: function () {
+               return this._place.name;
+            },
+
+            /**
+             * Destroys the place, its marker and its list entry
+             */
+            destroy:  function () {
+
+                this._marker.setVisible(false);
+
+                var list = document.getElementById('list');
+                list.removeChild(this._entry);
+
+                delete this._marker;
+                delete this._entry;
+                delete places[this._place.name];
+
+                if(start == this){
+                    start = null;
+                    var count = 0;
+                    for (var prop in places)
+                        if (Math.random() < 1/++count){
+                            start = places[prop];
+                            start._entry.className += " active"
+                        }
+
+                }
+            }
+
+        };
+
+
+        /**
+         * Solves the TSP via sending an AJAX Request to the server
+         */
+        function solve() {
+             if(Object.keys(places).length < 2){
+                    window.alert("You must have at least 2 waypoints");
+                    return;
+                }
+
+                if(algos.length < 1){
+                    window.alert("You must have at least 1 Algorithm");
+                    return;
+                }
+                    // Temporary container for places' names
+                    var _places = [];
+
+                    // Temporary container start's name
+                    var _start = start._place.name;
+
+                    // Get places' names
+                    for (var place in places){
+                        if (places.hasOwnProperty(place)) {
+                            _places.push(place);
+                        }
+                    }
+
+                    // Number of algos
+                    var n = algos.length;
+
+                    // For each algo: Get a solution and open in new tab
+                    for(var i=0;i<n;i++) {
+
+                        // The current algo
+                        var algo = algos[i];
+
+                        // The current algo's options
+                        var _options = {};
+
+                        //Get algo's options
+                        var form = document.getElementById(algo+"-options");
+
+                        // If present, write to JSON
+                        if(form){
+                            for (i=0; i<form.elements.length; i++){
+                                _options[form.elements[i].name] = form.elements[i].value
+                            }
+                        }
+
+                        // Call server
+                        $.get( "/ajax/solve", { origin: _start, waypoints: _places, algo: algo, options: _options} )
+                        .done(function( data ) {
+
+                            if(data["status"] == SUCCESS){
+                                // Inform User
+                                window.alert(data["algo"] + " finished SUCCESSFULLY!");
+
+                                // Generate URL for Google Maps
+                                var url = "https://www.google.de/maps/dir/";
+                                for (var waypoint in data["path"]) {
+                                    url = url + data["path"][waypoint] + "/"
+                                }
+
+                                // Add the start at the end to finish the tour
+                                url = url + data["start"];
+
+                                //Open Google in new Tab
+                                var win = window.open(url, '_blank');
+                                win.focus();
+                            }else{
+                                window.alert(data["algo"] + " FAILED!\n" + data["msg"]);
+                            }
+                        });
+                    }
+        }
+    </script>
+
+    <script>
+
+        /**
+         *  This function id called once the map has loaded
+         */
+        function onInit() {
+
+
+            var input = /** @type {!HTMLInputElement} */(
+                document.getElementById('pac-input'));
+
+            var button = /** @type {!HTMLInputElement} */(
+                document.getElementById('solve-button'));
+
+
+            button.onclick = solve;
+
+
+            // The Map as on Object
+            map = new google.maps.Map(document.getElementById('google_tsp_map'), {
+                center: {lat: 51.7190500, lng: 8.7543900},
+                zoom: 13
+            });
+
+            var service = new google.maps.places.PlacesService(map);
+            var geocoder = new google.maps.Geocoder();
+
+            map.addListener("click", function (e) {
+              if (e.placeId)
+              {
+
+                      service.getDetails(
+                              {
+                                  placeId: e.placeId
+                              },
+                              function (place) {
+                                  addPlace(place);
+                              }
+                      );
+              }
+              else if(e.latLng)
+              {
+                  
+                  geocoder.geocode({location: e.latLng},
+                          function (response, status) {
+                                  if (status == google.maps.GeocoderStatus.OK) {
+                                      service.getDetails(
+                                              {
+                                                  // If you look 15 lines above you know what Google thinks about consistency
+                                                  // Its Stuff like this why I hate doing GUIs
+                                                  placeId: response[0].place_id
+                                              },
+                                              function (place) {
+                                                  addPlace(place);
+                                              }
+                                      );
+                                  }
+                          }
+                  );
+              }
+            });
+
+            //Create the autocomplete
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.bindTo('bounds', map);
+
+            autocomplete.addListener('place_changed', function() {
+                var place = autocomplete.getPlace();
+                addPlace(place);
+                input.value = "";
+            });
+
+        }
+    </script>
+
+    <!-- Calls google to get the JS for the map. Once its loaded, it calls "onInit()" -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9mui55PssOmjdZNoQ_P58Xh6YjIqZW-Q&libraries=places&callback=onInit"
+        async defer></script>
+
+
+{% endblock %}

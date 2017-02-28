@@ -1,0 +1,70 @@
+<!-- extend base layout -->
+{% extends "javascript.html" %}
+
+{% block content %}
+
+    <div id="google_tsp_map"></div>
+
+      <div id="google_tsp_control">
+
+          <div class="container">
+              <div class="row">
+
+                   <div class="col-sm-3">
+                        <h2>Add Place</h2>
+                        <input id='pac-input' class="form-control" type="text" placeholder="Enter a location">
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-sm-3">
+                      <h2>Places</h2>
+                      <div id="list" class="list-group">
+
+                      </div>
+                  </div>
+              </div>
+
+              <div class="row">
+
+                  <div class="col-sm-3">
+                        <h2>Algorithms</h2>
+                  </div>
+              </div>
+
+
+                {% for algo in algos %}
+                   <div class="row">
+
+                       <div class="col-sm-3">
+                        <input type="checkbox" href="#" onclick="javascript:setAlgo('{{algo.name}}')" id = "{{algo.name}}-checkbox" name = "{{algo.name}}" value="{{algo.name}}"><a href="{{algo.info()}}">{{algo.name}}</a></input>
+                        <form id="{{algo.name}}-options">
+                        <ul>
+                          {% for k, v in algo.options().items() %}
+                            <li>
+                            <label for="{{k}}-option" class="col-form-label">{{v.name}}</label>
+                                <div>
+                                    <input class="form-control" type="number" value="{{v.default}}" min="{{v.min}}" max="{{v.max}}" step="{{v.step}}" id="{{k}}-option" name="{{k}}">
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                       </form>
+                  </div>
+                </div>
+              {% endfor %}
+
+
+              <div class="row">
+                  <div class="col-sm-12">
+                     <div class="btn-group">
+
+                         <button type="button" class="btn btn-primary" id="solve-button">Start</button>
+                         <button type="button" class="btn btn-primary" id="reset-button">Reset</button>
+                     </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+
+{% endblock %}

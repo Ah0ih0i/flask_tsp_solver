@@ -1,0 +1,106 @@
+<html>
+  <head>
+    <title>Travelling Salesman</title>
+
+          <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  </head>
+
+  <style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+      #google_tsp_map {
+        height: 100%;
+        float: left;
+        width: 63%;
+        height: 100%;
+      }
+      #google_tsp_control {
+        float: right;
+        width: 34%;
+        height: 100%;
+      }
+        #google_tsp_control {
+          font-family: 'Roboto','sans-serif';
+          line-height: 30px;
+          padding-left: 10px;
+        }
+
+        #google_tsp_control select, #google_tsp_control input {
+          font-size: 15px;
+        }
+
+        #google_tsp_control select {
+          width: 100%;
+        }
+
+        #google_tsp_control i {
+          font-size: 12px;
+        }
+
+      .panel {
+        height: 100%;
+        overflow: auto;
+      }
+    .controls {
+        margin-top: 10px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    #pac_input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 300px;
+    }
+
+    #pac_input:focus {
+        border-color: #4d90fe;
+    }
+
+    .pac-container {
+        font-family: Roboto;
+    }
+
+    #type-selector {
+        color: #fff;
+        background-color: #4d90fe;
+        padding: 5px 11px 0px 11px;
+    }
+
+    #type-selector label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+    }
+
+</style>
+  <body>
+    {% block javascript %}
+
+    {% endblock %}
+
+    {% block content %}
+
+    {% endblock %}
+  </body>
+</html>

@@ -1,0 +1,10 @@
+{
+    "ACO": 601363.0, 
+    "Christofides": 661946.0, 
+    "FurthestNeighbor": 900796.0, 
+    "NearestNeighbor": 716632.0, 
+    "__Meta__": {
+        "Matix": "Australia.pickle", 
+        "Start": "Melbourne, Australia"
+    }
+}
