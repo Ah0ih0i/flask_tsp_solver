@@ -3,29 +3,29 @@ A simple set of solvers for the TSP.
 
 Main purpose of this project was to learn JavaScript and Python Webservices 
 
-# CLI (Linuc)
+# CLI (Linux)
 
 For quick tests, you can use the CLI.
 Therefore install all dependencies via
 
-```make```
+``make``
 
 Then activate the Virtual Environment via:
 
-```./venv/bin/activate```
+``./venv/bin/activate``
 
 Then execute the CLI script via
 
-```python CLI.py arg0, ..., arg8```
+``python CLI.py arg0, ..., arg8``
 
-where ```arg0, ..., arg8``` are places to want to visit and ```arg0``` is the start
+where ``arg0, ..., arg8`` are places to want to visit and ``arg0`` is the start
 
 
 # Quickstart Webserver (Linux)
 
 To run the server in a virtual environment, just type
 
-```make && make run```
+``make && make run``
 
 in the root directory.
 
