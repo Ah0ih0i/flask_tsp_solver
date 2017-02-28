@@ -154,6 +154,7 @@ class AntColony(AbstractTSPSolver):
 
             # Log progress
             logging.info("%s started iteration %d" % (self.name, i))
+            print "%s started iteration %d" % (self.name, i)
 
             # Stores path of each ant
             P = []

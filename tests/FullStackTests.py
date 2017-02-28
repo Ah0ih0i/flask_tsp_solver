@@ -9,12 +9,19 @@ from random import uniform
 import networkx as nx
 from datetime import datetime
 
-from tsp_application import Christofides, AntColony
 from tsp_application import GoogleDistanceMatrixFactory
 from tsp_application import algorithms
 
 
 def mock_shortest_path_metric(n=10, low=1000, hi=5000):
+    """
+    Creates a fake matrix with random distances from the interval [low, hi]
+
+    :param n: Number of places
+    :param low: Lowest distance
+    :param hi: Highest distance
+    :return:
+    """
 
     # A complete Graph with diameter 1
     G = nx.complete_graph(n)
@@ -36,29 +43,23 @@ def mock_shortest_path_metric(n=10, low=1000, hi=5000):
 
 
 
+def createTestset(self, name, places):
+        """
+        Creates a testset with the given places and stores it under the given name
+        :param name:
+        :param places:
+        :return:
+        """
+
+        factory = GoogleDistanceMatrixFactory("AIzaSyAhv0XHIwkULVVFQFxTDIAFpFxHBB7YHH4")
+
+        matrix = factory.create(places)
+        assert matrix
+
+        pickle.dump(matrix, open("testsets/%s.json" % (name), "wb"))
+
 
 class FullStackTest(unittest.TestCase):
-
-    def setUp(self):
-        self.factory = GoogleDistanceMatrixFactory("AIzaSyAhv0XHIwkULVVFQFxTDIAFpFxHBB7YHH4")
-        self.christo = Christofides()
-        self.ants = AntColony()
-
-
-
-#    def testPickleAustralia(self):
-#        origins = ["Perth, Australia",
-#                   "Sydney, Australia",
-#                   "Melbourne, Australia", "Adelaide, Australia",
-#                   "Brisbane, Australia", "Darwin, Australia",
-#                   "Hobart, Australia", "Canberra, Australia"]
-#
-#        aussis = self.factory.create(origins)
-#        assert aussis
-#
-#        import pickle
-#
-#        pickle.dump(aussis, open("Australia.pickle", "wb"))
 
 
     def testAll(self):
