@@ -24,8 +24,8 @@ def ajax_solve():
    {
         "status": <- Status code,
         "length": <- length of the path (iff path is found)
-        "start": <- The starting point
-        "algo": <- The used algorithm
+        "start": <- The starting point (iff path is found)
+        "algo": <- The used algorithm (iff path is found)
         "path": <- A list in which order to visit the endpoints (iff path is found)
         "msg": <- An optional message
     }
@@ -86,6 +86,8 @@ def ajax_solve():
     # Convert to tuple if necessary
     # This is needed to store waypoints as keys in a dict
     start = to_tuple(start)
+
+
 
     waypoints = json.getlist("waypoints[]")
     if not waypoints:

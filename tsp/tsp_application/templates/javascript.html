@@ -57,6 +57,10 @@
             if(Object.keys(places).length== MAX_PLACES){
                 window.alert("You cannot have more than " + MAX_PLACES +" places");
                 return;
+            }else
+            if(place.name == "Unnamed Road"){
+                window.alert("Unnamed Roads are not supported");
+                return;
             }
 
             // If the place has a geometry, then present it on a map.
@@ -67,14 +71,15 @@
                 map.setZoom(17);  // Why 17? Because it looks good.
             }
 
-            if(!places[place.name])
-                places[place.name] = new PlaceWrapper(place);
+
+            if(!places[place.place_id])
+                places[place.place_id] = new PlaceWrapper(place);
             else{
                 window.alert(place.name + " is already on your path");
             }
 
             if(start == null){
-                start = places[place.name];
+                start = places[place.place_id];
                 start._entry.className += " active";
             }
         }
@@ -150,7 +155,7 @@
              * @returns {*}
              */
             getPlace: function () {
-               return this._place.name;
+                return this._place.name;
             },
 
             /**
@@ -165,7 +170,7 @@
 
                 delete this._marker;
                 delete this._entry;
-                delete places[this._place.name];
+                delete places[this._place.place_id];
 
                 if(start == this){
                     start = null;
@@ -199,12 +204,14 @@
                     var _places = [];
 
                     // Temporary container start's name
-                    var _start = start._place.name;
+                    var _start = start.getPlace();
+                    window.alert(_start);
 
                     // Get places' names
                     for (var place in places){
                         if (places.hasOwnProperty(place)) {
-                            _places.push(place);
+                            window.alert(places[place].getPlace());
+                            _places.push(places[place].getPlace());
                         }
                     }
 
